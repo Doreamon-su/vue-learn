@@ -3,7 +3,7 @@
     <!-- 绿色背景 -->
     <div id="dragBg" ref="dragBg"></div>
     <!-- 滑动容器文本 -->
-    <div id="dragText"></div>
+    <div id="dragText">{{result}}</div>
     <!-- 滑块 -->
     <div id="dragHandler" @mousedown="drag" ref="dragHandler">{{count}}</div>
   </div>
@@ -12,16 +12,28 @@
 export default {
   data() {
     return {
-      count: 1,
+      count: 0,
+      result: "滑动验证",
     };
   },
   methods: {
     drag: function () {
+      var dragHandler = document.querySelector("#dragHandler");
+      var fixX = event.clientX - dragHandler.offsetLeft;
+      var self = this;
       document.onmousemove = function () {
-        document.querySelector("#dragHandler").style.left =
-          event.clientX - 20 + "px";
-        document.querySelector("#dragBg").style.width =
-          event.clientX - 20 + "px";
+        var distanceX = event.clientX - fixX;
+        if (distanceX < 0) {
+          distanceX = 0;
+        } else if (distanceX > 260) {
+          distanceX = 260;
+        }
+        dragHandler.style.left = distanceX + "px";
+        document.querySelector("#dragBg").style.width = distanceX + "px";
+        self._data.count = parseInt((distanceX / 260) * 100);
+        if (self._data.count == 100) {
+          self._data.result = "验证通过";
+        }
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -66,5 +78,7 @@ export default {
   height: 100%;
   cursor: move;
   background: #fff;
+  user-select: none;
+  line-height: 33px;
 }
 </style>

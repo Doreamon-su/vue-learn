@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <slider-confirm></slider-confirm>
+    <slider-confirm id="slider-confirm"></slider-confirm>
   </div>
 </template>
 
@@ -16,3 +16,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+#slider-confirm{
+position: absolute;
+left: 300px;
+}
+</style>
